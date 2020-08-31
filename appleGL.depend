@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1598877109 source:/home/me/Desktop/Graphics/appleGL/main.cpp
+	<GL/glew.h>
+	<GL/glut.h>
+	<GLFW/glfw3.h>
+	<iostream>
+
