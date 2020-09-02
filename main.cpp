@@ -45,11 +45,24 @@ int main(void)
         .5f, -.5f
         };
 
+    /* Square */
+    float square_positions[8] =
+    {
+        -.5f, -.5f,
+        -.5f,.5f,
+        .5f,.5f,
+        .5f,-.5f
+    };
+
     /* Creates a buffer, useful for things which are static (such as background). */
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), tri_positions, GL_STATIC_DRAW); // 6 float values from 3 vertices (each with 2 coordinates)
+
+    /* stride is distance between vertecies in bytes. */
+    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE, 2*sizeof(float), 0);
+    glEnableVertexAttribArray(0);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
