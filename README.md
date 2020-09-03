@@ -1,2 +1,2 @@
 # appleGL
-OpenGL practice. 
+OpenGL rendering. 
