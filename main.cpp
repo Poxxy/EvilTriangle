@@ -3,7 +3,7 @@
 */
 
 #include <GL/glew.h>
-//#include <GL/glut.h>
+#include <GL/glut.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -78,31 +78,35 @@ int main(void)
     }
 
     /* Triangle */
-    float tri_positions[6] =
+    float tri_positions[] =
         {
-        -.5f, -.5f,
-        .0f, .5f,
-        .5f, -.5f
+        .0f, .0f,
+        1.0f, .0f,
+        1.0f, 1.0f,
+        .0f, 1.0f
         };
 
-    /* Square */
-    float square_positions[8] =
-    {
-        -.5f, -.5f,
-        -.5f,.5f,
-        .5f,.5f,
-        .5f,-.5f
+    /* Index Buffer. Can be reduced to unsigned char or unsigned short if space is an issue. */
+    unsigned int indices[] {
+        0, 1, 2, //triangle 1
+        3, 0, 2
     };
 
-    /* Creates a buffer, useful for things which are static (such as background). */
+    /* Creates the main buffer, useful for things which are static (such as background). */
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), tri_positions, GL_STATIC_DRAW); // 6 float values from 3 vertices (each with 2 coordinates)
+    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), tri_positions, GL_STATIC_DRAW); // 8 float values from 4 vertices (each with 2 coordinates)
 
     /* stride is distance between vertecies in bytes. */
     glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE, 2*sizeof(float), 0);
     glEnableVertexAttribArray(0);
+
+    /* Creates the index buffer, useful for reducing amount of GPU calls */
+    unsigned int index_buffer;
+    glGenBuffers(1, &index_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * 2 * sizeof(unsigned int), indices, GL_STATIC_DRAW); // 6 unsigned ints from 2 triangles (each with 3 vertices)
 
     //Actual shader definition
     std::string vertexShader =
@@ -134,8 +138,8 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        /* Calls upon buffer */
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        /* Calls upon buffer, glDrawArrays is used if no index buffer is in place. */
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT,nullptr);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
