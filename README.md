@@ -7,6 +7,7 @@ To use, you can clone the whole repository and use the Code::Blocks files made, 
 ## Includes
 
 <GL/glew.h>
+
 <GL/glut.h>
 
 <GLFW/glfw3.h>
