@@ -1,2 +1,3 @@
 # EvilTriangle
-OpenGL used to render a red triangle to screen.
+
+Using OpenGL, triangles get rendered to the screen to create a scene.
